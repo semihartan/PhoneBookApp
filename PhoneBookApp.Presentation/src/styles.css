@@ -1,0 +1,27 @@
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #f0f2f5; 
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column; 
+}
+
+app-root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ensure html also takes full height */
+html {
+  height: 100%;
+}
