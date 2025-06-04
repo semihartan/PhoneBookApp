@@ -1,0 +1,1 @@
+export type PhoneNumberType = "Mobile" | "Home" | "Work" | "Other";

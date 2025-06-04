@@ -1,0 +1,18 @@
+{
+    "Name": "Semih Artan",
+    "Notes": "It is me",
+    "PhoneNumbers": [
+        {
+            "Number": "+9055341651070",
+            "Type": "Mobile",
+            "IsPrimary": true
+        }
+    ],
+    "Emails": [
+        {
+            "Address": "semih.artaan@outlook.com",
+            "Type": "Personal",
+            "IsPrimary": true
+        }
+    ]
+}

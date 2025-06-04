@@ -1,0 +1,102 @@
+<div class="contact-form-page">
+  <header class="form-header">
+    <h2>{{ pageTitle }}</h2>
+  </header>
+
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="form-content">
+    <!-- Name Field -->
+    <div class="form-field">
+      <label for="name">Name:</label>
+      <input id="name" type="text" formControlName="name" placeholder="Contact name">
+      @if (contactForm.get('name')?.invalid && (contactForm.get('name')?.dirty || contactForm.get('name')?.touched)) {
+        <div class="error-message">
+          @if (contactForm.get('name')?.errors?.['required']) { <small>Name is required.</small> }
+        </div>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="notes">Notes:</label>
+      <textarea id="notes" formControlName="notes" placeholder="Optional notes"></textarea>
+    </div>
+
+    <div class="form-section">
+      <h3>Phone Numbers</h3>
+      <div formArrayName="phoneNumbers">
+        @for (phoneGroup of phoneNumbers.controls; track $index; let i = $index) {
+          <div [formGroupName]="i" class="phone-entry">
+            <div class="form-field phone-number-field">
+              <label for="phone-number-{{i}}">Number:</label>
+              <input id="phone-number-{{i}}" type="tel" formControlName="number" placeholder="e.g., 555-1234">
+            </div>
+            <div class="form-field phone-type-field">
+              <label for="phone-type-{{i}}">Type:</label>
+              <select id="phone-type-{{i}}" formControlName="type">
+                <option value="Mobile">Mobile</option>
+                <option value="Home">Home</option>
+                <option value="Work">Work</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-field phone-primary-field">
+              <input id="phone-primary-{{i}}" type="checkbox" formControlName="isPrimary" (change)="onPrimaryPhoneChange(i)">
+              <label for="phone-primary-{{i}}">Primary</label>
+            </div>
+            <button type="button" (click)="removePhoneNumber(i)" class="remove-button" title="Remove phone number">×</button>
+             @if (phoneGroup.get('number')?.invalid && (phoneGroup.get('number')?.dirty || phoneGroup.get('number')?.touched)) {
+                <div class="error-message full-width-error">
+                    @if (phoneGroup.get('number')?.errors?.['required']) { <small>Number is required.</small> }
+                </div>
+             }
+          </div>
+        }
+      </div>
+      <button type="button" (click)="addPhoneNumber()" class="add-more-button">
+        + Add Phone Number
+      </button>
+    </div>
+
+    <div class="form-section">
+      <h3>Email Addresses</h3>
+      <div formArrayName="emails">
+        @for (emailGroup of emails.controls; track $index; let i = $index) {
+          <div [formGroupName]="i" class="email-entry">
+            <div class="form-field email-address-field">
+              <label for="email-address-{{i}}">Address:</label>
+              <input id="email-address-{{i}}" type="email" formControlName="address" placeholder="e.g., user@example.com">
+            </div>
+            <div class="form-field email-type-field">
+              <label for="email-type-{{i}}">Type:</label>
+              <select id="email-type-{{i}}" formControlName="type">
+                <option value="Personal">Personal</option>
+                <option value="Work">Work</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-field email-primary-field">
+              <input id="email-primary-{{i}}" type="checkbox" formControlName="isPrimary" (change)="onPrimaryEmailChange(i)">
+              <label for="email-primary-{{i}}">Primary</label>
+            </div>
+            <button type="button" (click)="removeEmail(i)" class="remove-button" title="Remove email address">×</button>
+            @if (emailGroup.get('address')?.invalid && (emailGroup.get('address')?.dirty || emailGroup.get('address')?.touched)) {
+              <div class="error-message full-width-error">
+                @if (emailGroup.get('address')?.errors?.['required']) { <small>Email address is required.</small> }
+                @if (emailGroup.get('address')?.errors?.['email']) { <small>Please enter a valid email address.</small> }
+              </div>
+            }
+          </div>
+        }
+      </div>
+      <button type="button" (click)="addEmail()" class="add-more-button">
+        + Add Email Address
+      </button>
+    </div> 
+    <!-- Form Actions -->
+    <div class="form-actions">
+      <button type="submit" [disabled]="contactForm.invalid || isLoading" class="submit-button">
+        {{ isLoading ? 'Saving...' : (isEditMode ? 'Update Contact' : 'Save Contact') }}
+      </button>
+      <button type="button" (click)="onCancel()" class="cancel-button">Cancel</button>
+    </div>
+  </form>
+</div>
