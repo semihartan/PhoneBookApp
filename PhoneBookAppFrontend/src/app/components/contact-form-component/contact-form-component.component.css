@@ -93,7 +93,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  margin-bottom: 12px; /* Align with input padding */
+  margin-bottom: 12px;
   flex: 0 0 auto;
 }
 .phone-primary-field input[type="checkbox"] {
@@ -101,7 +101,7 @@
   margin-right: 5px;
 }
 
-.email-entry { /* Similar to phone-entry */
+.email-entry {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -140,11 +140,11 @@
   transition: background-color 0.2s;
 }
 .remove-button {
-  background-color: #fbe9e7; /* Light red */
-  color: #c62828; /* Darker red */
+  background-color: #fbe9e7;
+  color: #c62828;
   border-color: #ffccbc;
-  align-self: center; /* Align with other inputs */
-  margin-bottom: 10px; /* Align with other inputs */
+  align-self: center;
+  margin-bottom: 10px;
 }
 .remove-button:hover { background-color: #ffccbc; }
 .add-more-button { margin-top: 10px; background-color: #e8f5e9; color: #2e7d32; border-color: #c8e6c9;}

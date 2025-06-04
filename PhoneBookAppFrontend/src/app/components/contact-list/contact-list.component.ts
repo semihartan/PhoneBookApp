@@ -6,7 +6,6 @@ import { PhoneNumber } from '../../models/phone-number.model';
 
 @Component({
   selector: 'app-contact-list',
-  standalone: true, // Marks this as a standalone component 
   templateUrl: './contact-list.component.html',
   styleUrls: ['./contact-list.component.css']
 })
@@ -14,7 +13,8 @@ export class ContactListComponent implements OnInit {
   private router = inject(Router);
   private contactService = inject(ContactService);
   contacts: Contact[] = [];
-  isLoading: boolean = true;
+  isLoading: boolean = true; 
+  expandedContactId: number | null = null;
 
   ngOnInit(): void {
     this.loadContacts();
@@ -30,17 +30,15 @@ export class ContactListComponent implements OnInit {
       error: (err) => {
         console.error('Error fetching contacts:', err);
         this.isLoading = false;
-        // TODO: Display error to the user
       }
     });
   }
-    // Add to ContactListComponent class
-  expandedContactId: number | null = null;
-toggleActions(contactId: number): void {
+
+  toggleActions(contactId: number): void {
     if (this.expandedContactId === contactId) {
-      this.expandedContactId = null; // Collapse if already expanded
+      this.expandedContactId = null;
     } else {
-      this.expandedContactId = contactId; // Expand this one
+      this.expandedContactId = contactId;
     }
   }
 
@@ -58,28 +56,26 @@ toggleActions(contactId: number): void {
       .toUpperCase();
   }
 
-  // --- Action Handlers ---
   callContact(contact: Contact): void {
     const phoneNumber = this.getPrimaryPhoneNumber(contact.phoneNumbers);
     if (phoneNumber) {
       console.log(`Calling ${contact.name} at ${phoneNumber}...`);
-      window.location.href = `tel:${phoneNumber}`; // For actual call on mobile
+      window.location.href = `tel:${phoneNumber}`;
     } else {
       console.warn(`No phone number to call for ${contact.name}`);
-      // Potentially show a message to the user
     }
-    this.expandedContactId = null; // Collapse after action
+    this.expandedContactId = null;
   }
 
   messageContact(contact: Contact): void {
     const phoneNumber = this.getPrimaryPhoneNumber(contact.phoneNumbers);
     if (phoneNumber) {
       console.log(`Messaging ${contact.name} at ${phoneNumber}...`);
-      window.location.href = `sms:${phoneNumber}`; // For actual SMS on mobile
+      window.location.href = `sms:${phoneNumber}`;
     } else {
       console.warn(`No phone number to message for ${contact.name}`);
     }
-    this.expandedContactId = null; // Collapse after action
+    this.expandedContactId = null;
   }
 
   viewDetails(contact: Contact): void {
@@ -89,28 +85,23 @@ toggleActions(contactId: number): void {
   }
 
   confirmDeleteContact(contact: Contact): void {
-    // Using a simple browser confirm, consider a more styled modal for better UX
     if (confirm(`Are you sure you want to delete ${contact.name}? This action cannot be undone.`)) {
-      this.isLoading = true; // Optional: show a loading state for delete
+      this.isLoading = true;
       this.contactService.deleteContact(contact.contactID).subscribe({
         next: () => {
           console.log(`${contact.name} deleted successfully.`);
-          // Remove the contact from the local array to update the UI
           this.contacts = this.contacts.filter(c => c.contactID !== contact.contactID);
-          this.expandedContactId = null; // Collapse actions
+          this.expandedContactId = null;
           this.isLoading = false;
-          // Optionally, show a success notification (e.g., a toast message)
         },
         error: (err) => {
           console.error(`Error deleting contact ${contact.name}:`, err);
           this.isLoading = false;
-          this.expandedContactId = null; // Still collapse actions
-          // Optionally, show an error notification
+          this.expandedContactId = null; 
         }
       });
     } else {
-      // User cancelled the deletion, optionally collapse actions
-      // this.expandedContactId = null;
+      this.expandedContactId = null;
     }
   }
 
@@ -118,5 +109,4 @@ toggleActions(contactId: number): void {
     console.log('Add new contact clicked');
     this.router.navigate(['/contacts/new']);
   }
-  // We'll add edit/delete functionality later
 }

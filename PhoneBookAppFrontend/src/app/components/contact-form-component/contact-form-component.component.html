@@ -4,7 +4,6 @@
   </header>
 
   <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="form-content">
-    <!-- Name Field -->
     <div class="form-field">
       <label for="name">Name:</label>
       <input id="name" type="text" formControlName="name" placeholder="Contact name">
@@ -90,8 +89,7 @@
       <button type="button" (click)="addEmail()" class="add-more-button">
         + Add Email Address
       </button>
-    </div> 
-    <!-- Form Actions -->
+    </div>
     <div class="form-actions">
       <button type="submit" [disabled]="contactForm.invalid || isLoading" class="submit-button">
         {{ isLoading ? 'Saving...' : (isEditMode ? 'Update Contact' : 'Save Contact') }}
